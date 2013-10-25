@@ -1,0 +1,467 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Breach</title>
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.5/dat.gui.min.js"></script>
+	<style>
+		html,body {
+			background: #000;
+			margin: 0;
+			padding: 0;
+			overflow: hidden;
+		}
+
+		p{
+		  color: lime; 
+		  font-family: "Courier";
+		  font-size: 45px;
+		  margin: 10px 0 0 10px;
+		  white-space: nowrap;
+		  overflow: hidden;
+		  width: 30em;
+		  -webkit-animation: type 2s steps(60, end); 
+		}
+
+		.all p:nth-child(2){
+		  -webkit-animation: type2 4s steps(60, end);
+		}
+
+		.all  p:nth-child(3){
+		  -webkit-animation: type3 4.5s steps(60, end);
+		}
+
+		.all p:nth-child(4){
+		  -webkit-animation: type3 7s steps(60, end);
+		}
+
+		.all p:nth-child(5){
+		  -webkit-animation: type3 8s steps(60, end);
+		}
+
+		p a{
+		  color: lime;
+		  text-decoration: none;
+		}
+
+		span{
+		  -webkit-animation: blink 1s infinite;
+		}
+
+		@-webkit-keyframes type{ 
+		  from { width: 0; } 
+		} 
+
+		@-webkit-keyframes type2{
+		  0%{width: 0;}
+		  50%{width: 0;}
+		  100%{ width: 100; } 
+		} 
+		@-webkit-keyframes type3{
+		  0%{width: 0;}
+		  80%{width: 0;}
+		  100%{ width: 100; } 
+		} 
+
+		@-webkit-keyframes blink{
+		  to{opacity: .0;}
+		}
+
+		::selection{
+		  background: black;
+		}
+
+		img { display: none; }
+
+		#stage {
+			position: absolute;
+			top:0;
+			left:0;
+		}
+
+		/* FULANO */
+
+		.eye{
+		  width: 20px; height: 8px;
+		  background-color: #eee;
+
+		  border-radius:0px 0px 20px 20px;
+		  position: relative;
+		  top: 40px;
+		  left: 10px;
+		  box-shadow:  
+		               40px 0px 0px 0px #eee;              
+		}
+
+		.head{
+		  -webkit-backface-visibility: hidden;
+		  position: relative;
+		  margin: -250px auto;
+		  width: 80px; height: 80px;
+		  background-color: #111;
+		  border-radius:50px;
+		  box-shadow: inset -4px 2px 0px 0px #eee;
+		    -webkit-animation:node 1.5s infinite alternate;
+		  -webkit-animation-timing-function:ease-out;
+		}
+		.body{ 
+		  position: relative;
+		  margin: 90px auto;
+		  width: 140px; height: 120px;
+		  background-color: #111;
+		  border-radius: 50px/25px ;
+		  box-shadow: inset -5px 2px 0px 0px #eee;
+		  -webkit-animation:node2 1.5s infinite alternate;
+		  -webkit-animation-timing-function:ease-out;
+		  
+		}
+
+
+
+		  @-webkit-keyframes node 
+		      {
+		         0%{ top:0px; }
+		         50%{ top:10px; }
+		         100% { top:0px;} 
+		       }
+
+		  @-webkit-keyframes node2
+		      {
+		         0%{ top:-5px; }
+		         50%{ top:10px; }
+		         100% { top:-5px;} 
+		       }
+
+		.circ{
+		  -webkit-backface-visibility: hidden;
+		   margin: 60px auto;
+		  width: 180px; height: 180px;
+		  border-radius: 0px 0px 50px 50px;
+		  position: relative;
+		  left: 0%;
+		  top: 20%;
+		  overflow: hidden;
+		}
+
+		.hands{
+		  -webkit-backface-visibility: hidden;
+		  margin-top: 140px;
+		  width: 120px;height: 120px;
+		  position: absolute;
+		  background-color: #111;
+		  border-radius:20px;
+		  box-shadow:-1px -4px 0px 0px #eee;
+		  -webkit-transform:rotate(45deg);
+		  top:75%;left: 16%;
+		  z-index: 1;
+		  -webkit-animation:node2 1.5s infinite alternate;
+		  -webkit-animation-timing-function:ease-out;
+		}## Attack payload sequence initiated...
+		.load{  position: absolute;
+		  width: 100px; height: 20px;
+		   margin: -10px auto;
+		  -webkit-font-smoothing: antialiased;
+		  font-family: 'Julius Sans One', sans-serif;
+		  font-size:30px;
+		  font-weight:400;
+		  color:#eee;
+		  left: 10%;
+		  top: 5%;
+		  
+		}
+
+
+		/* REMOVE CONTROLS */
+		body > div {
+			display: none;
+		}
+
+		#fulano {
+			-webkit-transform: scale(2.2);
+		}
+
+		.sir {
+			width: 330px;
+			position: absolute;
+			bottom: 0;
+			right: 0;
+			text-align: right;
+			-webkit-transition: all 1s;
+			-webkit-transform: translate3d(0,0,0);
+
+		}
+
+		.off {
+			-webkit-transform: translate3d(0,300px,0);	
+		}
+
+		.done {
+			display:none;
+			margin-top: 200px;
+		}
+
+		#key {
+			position: absolute;
+			top: 50%;
+			width: 100%;
+			margin-top: -50px;
+			font-size: 5vw;
+			z-index: 100;
+			background: none;
+			border: none;
+			color: rgb(255, 255, 255);
+			font-family: Arial;
+			padding: 0 70px;
+			font-weight: bold;
+		}
+
+	</style>
+</head>
+<body>
+	<section class="all">
+		<p>
+			## Attack payload sequence initiated...
+		</p>
+		<p>$ sudo make me a sandwich </p>
+		<p>make: *** No rule to make target `me'. Stop.</p>
+		<p>
+			$ ./BREACH -sniffSSL=true 
+		</p>
+		<p>
+			> Extracting Secret...<span>|</span>
+		</p>
+	</section>
+	<section class="sir off">
+		<div id="fulano">
+		<div class="circ">
+			<div class="hands"></div>
+			<div class="body"></div>
+			<div class="head">
+ 			<div class="eye"></div> 
+		</div>
+		</div>
+	</section>
+
+	<input type="text" name="key"/ id="key" style="pos">
+
+	<section class="done"> 
+		<p>-- SECRET FULLY DECRYPTED</p>
+		<p>-- CSRF ATTACK SUCCESFULLY EXECUTED</p>
+		<p>-- SOCKETS TERMINATED</p>
+		<P>-- ALL SUBSYSTEMS CLEAR</P>
+	</section>
+  
+  </div>
+
+	<canvas id="stage"></canvas>
+
+	<script>
+		var glitcher = {
+	init: function () {
+   setTimeout((function () {
+   
+		  this.canvas = document.getElementById( 'stage' );
+		  this.context = this.canvas.getContext( '2d' );
+		
+		  this.initOptions();
+		  this.resize();
+		  this.tick();
+   }).bind(this), 100);
+	},
+	initOptions: function () {
+		
+		var gui = new dat.GUI(),
+				current = gui.addFolder('Current'),
+				controls = gui.addFolder('Controls');
+				
+		
+		this.width = document.documentElement.offsetWidth;
+		this.height = window.innerHeight;
+		
+		//ANGELITO MODIFY (MAYBE)
+
+		this.font = 'bold 5vw Arial'; //size and style of the font
+  		this.context.font = this.font;
+		
+		//number of initial characters (keep the width)
+		// this is a long spaceing string...
+		this.text = "                                                                ";
+
+		this.textWidth = (this.context.measureText(this.text)).width;
+
+
+		//YAFUE ESTO DEJALO ESTAR QUE SON LOS DEFAULT!!
+		this.fps = 60;
+		
+		this.channel = 0; // 0 = red, 1 = green, 2 = blue
+		this.compOp = 'lighter'; // CompositeOperation = lighter || darker || xor
+		
+		this.phase = 0.0;
+		this.phaseStep = 0.05; //determines how often we will change channel and amplitude
+		this.amplitude = 0.0;
+		this.amplitudeBase  = 2.0;
+		this.amplitudeRange = 2.0;
+		this.alphaMin = 0.8;
+		
+		this.glitchAmplitude = 20.0;
+		this.glitchThreshold = 0.9; 
+		this.scanlineBase = 40;
+		this.scanlineRange = 40;
+		this.scanlineShift = 15;
+		
+		current.add(this, 'channel', 0, 2).listen();
+		current.add(this, 'phase', 0, 1).listen();
+		current.add(this, 'amplitude', 0, 5).listen();
+		
+		var text = controls.add(this, 'text');
+		text.onChange((function (value) {
+			this.textWidth = (this.context.measureText(this.text)).width;
+		}).bind(this));
+		controls.add(this, 'fps', 1, 60);
+		controls.add(this, 'phaseStep', 0, 1);
+		controls.add(this, 'alphaMin', 0, 1);
+		controls.add(this, 'amplitudeBase', 0, 5);
+		controls.add(this, 'amplitudeRange', 0, 5);
+		controls.add(this, 'glitchAmplitude', 0, 100);
+		controls.add(this, 'glitchThreshold', 0, 1);
+		//controls.open();
+		// gui.add(fizzyText, 'noiseStrength', 0, 100).listen();
+		
+	},
+	tick: function () {
+		setTimeout((function () {
+
+			this.phase += this.phaseStep;
+
+			if( this.phase > 1 ) {
+				this.phase     = 0.0;
+				this.channel   = (this.channel === 2) ? 0 : this.channel + 1;
+				this.amplitude = this.amplitudeBase + (this.amplitudeRange * Math.random());
+			}
+			
+			this.render();
+			this.tick();
+				
+		}).bind(this), 1000 / this.fps);
+	},
+	render: function () {
+		var x0 = this.amplitude * Math.sin( (Math.PI * 2) * this.phase ) >> 0,
+				x1, x2, x3;
+
+		if( Math.random() >= this.glitchThreshold ) {
+			x0 *= this.glitchAmplitude;
+		}
+
+		x1 = this.width - this.textWidth >> 1;
+		x2 = x1 + x0;
+		x3 = x1 - x0;
+
+		this.context.clearRect( 0, 0, this.width, this.height );
+		this.context.globalAlpha = this.alphaMin + ((1-this.alphaMin) * Math.random());
+
+		switch( this.channel ) {
+			case 0: this.renderChannels(x1, x2, x3); break;
+			case 1: this.renderChannels(x2, x3, x1); break;
+			case 2: this.renderChannels(x3, x1, x2); break;
+		}
+
+		this.renderScanline();
+	},
+	renderChannels: function (x1, x2, x3) {
+  this.context.font = this.font;
+		this.context.fillStyle = "rgb(255,0,0)";
+		this.context.fillText(this.text, x1, this.height/2);
+
+		this.context.globalCompositeOperation = this.compOp;
+
+		this.context.fillStyle = "rgb(0,255,0)";
+		this.context.fillText(this.text, x2, this.height/2);
+		this.context.fillStyle = "rgb(0,0,255)";
+		this.context.fillText(this.text, x3, this.height/2);
+	},
+	renderScanline: function () {
+		var y = this.height * Math.random() >> 0,
+      o = this.context.getImageData( 0, y, this.width, 1 ),
+      d = o.data,
+      i = d.length,
+      s = this.scanlineBase + this.scanlineRange * Math.random() >> 0,
+      x = -this.scanlineShift + this.scanlineShift * 2 * Math.random() >> 0;
+
+		while( i-- > 0 ) {
+			d[i] += s;
+		}
+
+		this.context.putImageData( o, x, y );
+	},
+	resize: function () {
+	 if(this.canvas) {
+			this.canvas.width = document.documentElement.offsetWidth;
+			this.canvas.height = window.innerHeight;
+	 }
+	}
+};
+
+/*
+
+THIS ARE YOUR FUNCTIONS!!!
+
+*/
+
+function start () {
+	glitcher.init();
+	window.onresize = glitcher.resize;
+}
+
+function end () {
+	var sir = document.querySelector('.sir'),
+		done = document.querySelector('.done'),
+		stage = document.querySelector('#stage');
+
+	sir.className = 'sir';
+	glitcher.tick = function () {};
+	done.style.display = 'block';
+	stage.style.display = 'none';
+	key.value = glitcher.text;
+
+
+}
+
+function changeText (text) {
+	glitcher.text = text;
+}
+
+function addLetter (character) {
+	glitcher.text += character;
+}
+
+	</script>
+
+	<script>
+	//ANGELITO SCRIPTS
+
+	//call start() to initialize the letters to 32 blank characters
+	setTimeout(function () {
+		start();
+	}, 6000);
+
+	//crappy example:
+	setTimeout(function () {
+		changeText(' ');
+		setTimeout(function x() {
+			if (glitcher.text.length < 32) {
+				var c = (Date.now() % 16).toString(16);
+				addLetter(c);
+				setTimeout(function(){x()}, 600);
+			} else {
+				end();
+			}
+		}, 600);
+	}, 7000);
+
+	//end example
+
+	</script>
+
+
+</body>
+</html>
